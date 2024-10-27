@@ -22,7 +22,6 @@ struct PostData {
 
 #[post("/execute_query")]
 pub async fn execute_query(data: Json<PostData> ) -> HttpResponse {
-    // TODO find tweet a tweet by ID and return it
     let text_result: &str = data.query.as_str();
     match text_result {
         "res" => HttpResponse::Ok()
@@ -37,33 +36,8 @@ pub async fn execute_query(data: Json<PostData> ) -> HttpResponse {
 }
 
 
-// #[post("/execute_query_method")]
-// pub async fn execute_query_method(data: Json<PostQuery> ) -> HttpResponse {
-//     // TODO find tweet a tweet by ID and return it
-//     print!("execute_query_method");
-    
-//     let result = executeInCluster(&data.method, &data.query);
-    
-//     print!("Got here!!!");
-
-//     match result {
-//         Ok(_) => {
-//             HttpResponse::Ok()
-//             .content_type("application/json")
-//             .json(result.unwrap().as_str())
-//         },
-//         Err(err) => {
-//             println!("input: {}", err);
-//             HttpResponse::Ok()
-//             .content_type("application/json")
-//             .json(err.to_string())
-//         }
-//     }
-// }
-
 #[post("/execute_query_method")]
 pub async fn execute_query_method(data: Json<PostQuery>, current_node: Data<Mutex<u8>> ) -> HttpResponse {
-    // TODO find tweet a tweet by ID and return it
     print!("execute_query_method");
     let peers = configs::read_config_file().unwrap();
     let rt = tokio::runtime::Runtime::new().unwrap();
@@ -92,7 +66,6 @@ pub async fn execute_query_method(data: Json<PostQuery>, current_node: Data<Mute
 
 #[get("/request_methods/{id}")]
 pub async fn get(path: Path<String>) -> HttpResponse {
-    // TODO find tweet a tweet by ID and return it
     let id = path.into_inner();
     let text_result: &str = id.as_str();
     
@@ -134,9 +107,7 @@ async fn execute_in_cluster(name_method: &str, data_json: &str, peer: configs::P
     //println!("got: {:?}", res);
     let result2 = res.unwrap();
     let result1 = result2.data_utf8().unwrap();
-    
-
-    // If you want to block until socket disconnected.
-    // cli.wait_for_close().await;
     Ok(String::from(result1))
 }
+
+
